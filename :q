@@ -9,10 +9,6 @@ defmodule Vocial.Votes do
     Repo.all(Poll) |> Repo.preload(:options)
   end
 
-  def list_options do
-    Repo.all(Option) |> Repo.preload(:poll)
-  end
-
   def new_poll do
     Poll.changeset(%Poll{}, %{})
   end
