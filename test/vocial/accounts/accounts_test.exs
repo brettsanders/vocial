@@ -34,7 +34,6 @@ defmodule Vocial.AccountsTest do
       updated = Accounts.list_users()
       assert !Enum.any?(before, fn u -> user == u end)
       assert Enum.any?(updated, fn u -> user == u end)
-      IO.puts(Enum.count(updated))
     end
   end
 end
