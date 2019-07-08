@@ -23,6 +23,11 @@ defmodule VocialWeb.PollController do
       conn
       |> put_flash(:info, "Poll created successfully!")
       |> redirect(to: poll_path(conn, :index))
+    else
+      {:error, poll} ->
+        conn
+        |> put_flash(:alert, "Error creating poll!")
+        |> redirect(to: poll_path(conn, :new))
     end
   end
 end
