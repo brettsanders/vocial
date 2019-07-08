@@ -17,8 +17,11 @@ defmodule VocialWeb.Router do
     # Use the default browser stack
     pipe_through(:browser)
 
-    # Homepage
     get("/", PageController, :index)
+
+    resources("/sessions", SessionController, only: [:create])
+    get("/login", SessionController, :new)
+    delete("/logout", SessionController, :delete)
 
     resources("/polls", PollController, only: [:index, :new, :create])
     resources("/users", UserController, only: [:new, :show, :create])
