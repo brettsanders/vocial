@@ -3,9 +3,10 @@ defmodule VocialWeb.UserSocket do
 
   ## Channels
   # channel "room:*", VocialWeb.RoomChannel
+  channel("polls:lobby", VocialWeb.PollsChannel)
 
   ## Transports
-  transport :websocket, Phoenix.Transports.WebSocket
+  transport(:websocket, Phoenix.Transports.WebSocket)
   # transport :longpoll, Phoenix.Transports.LongPoll
 
   # Socket params are passed from the client and can
