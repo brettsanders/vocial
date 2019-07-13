@@ -8,7 +8,7 @@
     <span id="vote-count-<%= option.id%>" class="vote-count">
       <%= option.votes %>
     </span>
-    <a href="/options/<%= %>/vote" class="btn btn-primary vote-button-manual" data-option-id="<%= option.id %>">
+    <a href="/options/<%= option.id %>/vote" class="btn btn-primary vote-button-manual" data-option-id="<%= option.id %>">
       Vote
     </a>
     <br/>

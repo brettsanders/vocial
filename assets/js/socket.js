@@ -27,9 +27,12 @@ const socket = new Socket('/socket');
 // Connect to the socket itself
 socket.connect();
 
-const channel = socket.channel('polls:lobby', {});
+// Only connect to the socket if the polls channel actually exists
+const enableSocket = document.getElementById('enable-polls-channel');
+if (enableSocket) {
+  const pollId = enableSocket.getAttribute('data-poll-id');
+  const channel = socket.channel('polls:' + pollId, {});
 
-if (document.getElementById('enable-polls-channel')) {
   channel
     .join()
     .receive('ok', res => onJoin(res, channel))
