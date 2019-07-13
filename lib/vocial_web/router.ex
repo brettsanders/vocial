@@ -23,7 +23,7 @@ defmodule VocialWeb.Router do
     get("/login", SessionController, :new)
     delete("/logout", SessionController, :delete)
 
-    resources("/polls", PollController, only: [:index, :new, :create])
+    resources("/polls", PollController, only: [:index, :new, :create, :show])
     resources("/users", UserController, only: [:new, :show, :create])
 
     get("/options/:id/vote", PollController, :vote)

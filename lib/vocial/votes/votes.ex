@@ -5,6 +5,8 @@ defmodule Vocial.Votes do
   alias Vocial.Votes.Poll
   alias Vocial.Votes.Option
 
+  def get_poll(id), do: Repo.get!(Poll, id) |> Repo.preload(:options)
+
   def list_polls do
     Repo.all(Poll) |> Repo.preload(:options)
   end
