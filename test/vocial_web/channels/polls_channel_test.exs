@@ -29,4 +29,17 @@ defmodule VocialWeb.PollChannelTest do
     ref = push(socket, "ping", %{})
     assert_reply(ref, :ok, %{message: "pong"})
   end
+
+  test "vote replies with status ok", %{socket: socket, poll: poll} do
+    option = Enum.at(poll.options, 0)
+    ref = push(socket, "vote", %{"option_id" => option.id})
+
+    assert_reply(ref, :ok, %{"option_id" => option_id, "votes" => votes})
+    assert option_id == option.id
+    assert votes == option.votes + 1
+
+    assert_broadcast("new_vote", %{"option_id" => option_id, "votes" => votes})
+    assert option_id == option.id
+    assert votes == option.votes + 1
+  end
 end
