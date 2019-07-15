@@ -9,7 +9,9 @@ defmodule Vocial.Votes.Poll do
     field(:title, :string)
 
     has_many(:options, Option)
+    has_many(:vote_records, Vocial.Votes.VoteRecord)
     has_one(:image, Vocial.Votes.Image)
+
     belongs_to(:user, User)
 
     timestamps()
