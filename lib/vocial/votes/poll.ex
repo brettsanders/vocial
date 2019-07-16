@@ -4,11 +4,13 @@ defmodule Vocial.Votes.Poll do
   alias Vocial.Votes.Poll
   alias Vocial.Votes.Option
   alias Vocial.Accounts.User
+  alias Vocial.Votes.Message
 
   schema "polls" do
     field(:title, :string)
 
     has_many(:options, Option)
+    has_many(:messages, Message)
     has_many(:vote_records, Vocial.Votes.VoteRecord)
     has_one(:image, Vocial.Votes.Image)
 

@@ -6,6 +6,7 @@ defmodule Vocial.Votes do
   alias Vocial.Votes.Option
   alias Vocial.Votes.Image
   alias Vocial.Votes.VoteRecord
+  alias Vocial.Votes.Message
 
   def get_poll(id), do: Repo.get!(Poll, id) |> Repo.preload([:options, :image, :vote_records])
 
@@ -114,6 +115,35 @@ defmodule Vocial.Votes do
 
     %Image{}
     |> Image.changeset(attrs)
+    |> Repo.insert()
+  end
+
+  # Message Functionality
+  def list_lobby_messages do
+    Repo.all(
+      from(
+        m in Message,
+        where: is_nil(m.poll_id),
+        order_by: [desc: :inserted_at],
+        limit: 100
+      )
+    )
+  end
+
+  def list_poll_messages(poll_id) do
+    Repo.all(
+      from(m in Message,
+        where: m.poll_id == ^poll_id,
+        order_by: [desc: :inserted_at],
+        limit: 100,
+        preload: [:poll]
+      )
+    )
+  end
+
+  def create_message(attrs) do
+    %Message{}
+    |> Message.changeset(attrs)
     |> Repo.insert()
   end
 end
