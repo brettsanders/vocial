@@ -38,6 +38,10 @@ defmodule VocialWeb.PollController do
     end
   end
 
+  def create(conn, %{"poll" => _poll_params, "options" => _options} = params) do
+    create(conn, Map.put(params, "image_data", nil))
+  end
+
   def vote(conn, %{"id" => id}) do
     voter_ip =
       conn.remote_ip
@@ -51,8 +55,8 @@ defmodule VocialWeb.PollController do
     else
       _ ->
         conn
-        |> put_flash(:error, "Not valid code here")
-        |> redirect(to: poll_path(conn, :new))
+        |> put_flash(:error, "Could not vote!")
+        |> redirect(to: poll_path(conn, :index))
     end
   end
 end

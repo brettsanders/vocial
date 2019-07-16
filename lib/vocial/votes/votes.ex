@@ -21,7 +21,7 @@ defmodule Vocial.Votes do
     Poll.changeset(%Poll{}, %{})
   end
 
-  def create_poll_with_options(poll_attrs, options, image_data) do
+  def create_poll_with_options(poll_attrs, options, image_data \\ nil) do
     Repo.transaction(fn ->
       with {:ok, poll} <- create_poll(poll_attrs),
            {:ok, _options} <- create_options(options, poll),
@@ -62,10 +62,13 @@ defmodule Vocial.Votes do
 
   def vote_on_option(option_id, voter_ip) do
     with option <- Repo.get!(Option, option_id),
+         false <- already_voted?(option.poll_id, voter_ip),
          votes <- option.votes + 1,
          {:ok, option} <- update_option(option, %{votes: votes}),
          {:ok, _vote_record} <- record_vote(%{poll_id: option.poll_id, ip_address: voter_ip}) do
       {:ok, option}
+    else
+      _ -> {:error, "Could not place vote!"}
     end
   end
 
@@ -73,6 +76,14 @@ defmodule Vocial.Votes do
     %VoteRecord{}
     |> VoteRecord.changeset(attrs)
     |> Repo.insert()
+  end
+
+  def already_voted?(poll_id, ip_address) do
+    votes =
+      from(vr in VoteRecord, where: vr.poll_id == ^poll_id and vr.ip_address == ^ip_address)
+      |> Repo.aggregate(:count, :id)
+
+    votes > 0
   end
 
   def update_option(option, attrs) do
