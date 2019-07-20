@@ -1,21 +1,13 @@
-// Brunch automatically concatenates all files in your
-// watched paths. Those paths can be configured at
-// config.paths.watched in "brunch-config.js".
-//
-// However, those files will only be executed if
-// explicitly imported. The only exception are files
-// in vendor, which are never wrapped in imports and
-// therefore are always executed.
+// Import the default Phoenix HTML libraries
+import "phoenix_html";
 
-// Import dependencies
-//
-// If you no longer want to use a dependency, remember
-// to also remove its path from "config.paths.watched".
-import "phoenix_html"
+// Import the User Socket code to enable websockets
+import socket from "./socket";
 
-// Import local files
-//
-// Local files can be imported directly using relative
-// paths "./socket" or full ones "web/static/js/socket".
+// Import the polls channel code to enable live polling
+import LivePolls from "./poll";
+LivePolls.connect(socket);
 
-import socket from "./socket"
+// Import the Chat Socket code to enable chat
+import LiveChat from "./chat";
+LiveChat.connect(socket);
