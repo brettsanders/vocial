@@ -3,4 +3,4 @@
 
 <%= render("_poll.html", %{poll: @poll, conn: @conn}) %>
 
-<%= render(VocialWeb.SharedView, "_chat.html") %>
+<%= render(VocialWeb.SharedView, "_chat.html", messages: @poll.messages |> Enum.reverse(), chatroom: @poll.id) %>

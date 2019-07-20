@@ -8,10 +8,14 @@ defmodule Vocial.Votes do
   alias Vocial.Votes.VoteRecord
   alias Vocial.Votes.Message
 
-  def get_poll(id), do: Repo.get!(Poll, id) |> Repo.preload([:options, :image, :vote_records])
+  def get_poll(id) do
+    Repo.get!(Poll, id)
+    |> Repo.preload([:options, :image, :vote_records, :messages])
+  end
 
   def list_polls do
-    Repo.all(Poll) |> Repo.preload([:options, :image, :vote_records])
+    Repo.all(Poll)
+    |> Repo.preload([:options, :image, :vote_records, :messages])
   end
 
   def list_options do
