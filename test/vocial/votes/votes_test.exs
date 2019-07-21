@@ -20,7 +20,7 @@ defmodule Vocial.VotesTest do
     def poll_fixture(attrs \\ %{}) do
       with create_attrs <- Enum.into(attrs, @valid_attrs),
            {:ok, poll} <- Votes.create_poll(create_attrs),
-           poll <- Repo.preload(poll, [:options, :image, :vote_records]) do
+           poll <- Repo.preload(poll, [:options, :image, :vote_records, :messages]) do
         poll
       end
     end
