@@ -1,6 +1,7 @@
 defmodule VocialWeb.ChatChannel do
   use VocialWeb, :channel
   alias Vocial.Votes
+  alias Vocial.ChatCache
   alias VocialWeb.Presence
 
   def join("chat:lobby", payload, socket) do
@@ -33,6 +34,7 @@ defmodule VocialWeb.ChatChannel do
   end
 
   def handle_in("user_idle", %{"username" => username}, socket) do
+    ChatCache.write(socket.topic, username, "idle")
     push(socket, "presence_diff", Presence.list(socket))
 
     {:ok, _} =
@@ -48,6 +50,7 @@ defmodule VocialWeb.ChatChannel do
     [meta | _] = presence[username].metas
 
     if meta.status == "idle" do
+      ChatCache.write(socket.topic, username, "active")
       push(socket, "presence_diff", Presence.list(socket))
 
       {:ok, _} =
@@ -61,6 +64,7 @@ defmodule VocialWeb.ChatChannel do
   end
 
   def handle_info(:after_join, socket) do
+    ChatCache.write(socket.topic, socket.assigns.username, "active")
     push(socket, "presence_state", Presence.list(socket))
 
     {:ok, _} =

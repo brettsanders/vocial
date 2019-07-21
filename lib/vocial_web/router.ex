@@ -27,6 +27,8 @@ defmodule VocialWeb.Router do
     resources("/users", UserController, only: [:new, :show, :create])
 
     get("/options/:id/vote", PollController, :vote)
+
+    get("/history", PageController, :history)
   end
 
   # Other scopes may use custom stacks.
